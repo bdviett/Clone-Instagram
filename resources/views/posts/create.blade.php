@@ -17,7 +17,7 @@
 
                     <input  id="caption"
                             type="text"
-                            class="form-control{{ $errors->has('caption') ? 'is-invalid' : ''}}"
+                            class="form-control{{ $errors->has('caption') ? ' is-invalid' : ''}}"
                             name="caption"
                             value="{{ old('caption') }}"
                             autocomplete="caption" autofocus>
@@ -29,10 +29,10 @@
                     @endif
                 </div>
 
-                <div class="form-group row">
+                <div class="row">
                     <label for="image" class="col-md-4 col-form-label">Post image</label>
                 
-                    <input id="image" type="file" class="form-control-file" name="image">
+                    <input type="file" class="form-control-file" id="image" name="image">
                 
                     @if ($errors->has('image'))
                         <strong>{{ $errors->first('image') }}</strong>

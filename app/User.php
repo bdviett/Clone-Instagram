@@ -27,6 +27,18 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            $user->profile()->create([
+                'title' => $user->username,
+
+            ]);
+        });
+    }
+
     public function profile()
     {
         return $this->hasOne(Profile::class); // 1 user -> 1 profile
@@ -34,6 +46,11 @@ class User extends Authenticatable
 
     public function posts()
     {
-        return $this->hasMany(Post::class); // 1 user -> n post
+        return $this->hasMany(Post::class)->orderBy('created_at', 'DESC'); // 1 user -> n post
+    }
+    
+    public function following()
+    {
+        return $this->belongsToMany(Profile::class);
     }
 }

@@ -3,18 +3,31 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-4 p-5">
-            <img src="https://instagram.fhan3-3.fna.fbcdn.net/vp/54aa1263c67acba89ffd5521027af50f/5E3CB4FA/t51.2885-19/s150x150/52386854_1940179789444434_3707715026048516096_n.jpg?_nc_ht=instagram.fhan3-3.fna.fbcdn.net" class="rounded-circle">
+        <div class="col-3 p-5">
+            <img src="{{ $user->profile->profileImage() }}" class="rounded-circle w-100">
         </div>
-        <div class="col-8 pt-5">
+        <div class="col-9 pt-5">
             <div class="d-flex justify-content-between align-items-baseline">
-                <h1>{{ $user->username }}</h1>
-                <a href="#">Add New Post</a>
+
+                <div class="d-flex align-items-center pb-4">
+                    <div class="h4">{{ $user->username }}</div>
+                    <follow-button user-id="{{ $user->id }}" follows="{{ $follows }}"></follow-button>
+                </div>
+
+                {{-- @can('update', $user->profile) --}}
+                    <a href="/p/create">Add New Post</a>
+                {{-- @endcan --}}
+
             </div>
-            <div class="d-flex"> 
-                <div class="pr-5"><strong>143</strong> posts</div>
-                <div class="pr-5"><strong>291</strong> followers</div>
-                <div class="pr-5"><strong>1</strong> following</div>
+
+            {{-- @can('update', $user->profile) --}}
+                <a href="/profile/{{ $user->id }}/edit">Edit Profile</a>
+            {{-- @endcan --}}
+
+            <div class="d-flex">
+                <div class="pr-5"><strong>{{ $followCount }}</strong> posts</div>
+                <div class="pr-5"><strong>{{ $followerCount }}</strong> followers</div>
+                <div class="pr-5"><strong>{{ $followingCount }}</strong> following</div>
             </div>
             <div><strong>{{ $user->profile->title }}</strong></div>
             <div>{{ $user->profile->description }}</div>
@@ -22,9 +35,13 @@
         </div>
     </div>
     <div class="row pt-5">
-        <div class="col-4"><img src="/svg/cat1.jpg" alt="" class="w-100"></div>
-        <div class="col-4"><img src="/svg/cat2.jpg" alt="" class="w-100"></div>
-        <div class="col-4"><img src="/svg/cat3.jpg" alt="" class="w-100"></div>
+        @foreach ($user->posts as $post)
+        <div class="col-4 pb-4">
+            <a href="/p/ {{ $post->id }}">
+                <img src="/storage/{{ $post->image }}" alt="" class="w-100">
+            </a>
+        </div>
+        @endforeach
     </div>
 </div>
 @endsection
